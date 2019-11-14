@@ -1,29 +1,27 @@
+%% LMI for Minimizing Maximum EigenValue of a Matrix 
 clc; clear; close all;
 
-% Variables
 t = sdpvar(1);
-x1 = sdpvar(1); 
+
+x1 = sdpvar(1);
 x2 = sdpvar(1);
 
-% Ai (i = 1,2, ..., n) are symmetric matrices
-A0 = [1  2 
-      2  4];
-A1 = [5   3
-      3  -2];
-A2 = [1   0
-      0   4];
+A0 = [1 -4; 2 1];
+A1 = [2 -1; -1 2];
+A2 = [1 -2; 1 3];
 
-% LMI
-eta = 0.00000001;
-C = [t >= eta];
+% eta = 0.00000001;
+C = [];
+% C = [C; t > 0];
 A = A0 + A1*x1 + A2*x2;
 F = [C, A - t*eye(2) <= 0];
+
 optimize(F,t);
 
 % maximum eigenvalues
 t = value(t)
 
-% xi
+% x_{i}
 x1 = value(x1)
 x2 = value(x2)
 
